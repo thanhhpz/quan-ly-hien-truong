@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model khach_hang {
+  ma_nguoi_dung BigInt     @id
+  nguoi_dung    nguoi_dung @relation(fields: [ma_nguoi_dung], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model nguoi_dung {
+  ma_nguoi_dung BigInt      @id @default(autoincrement())
+  ten_dang_nhap String      @unique @db.VarChar(100)
+  mat_khau      String      @db.VarChar(255)
+  ho_ten        String      @db.VarChar(150)
+  so_dien_thoai String?     @unique @db.VarChar(20)
+  email         String?     @unique @db.VarChar(150)
+  trang_thai    String      @default("HOAT_DONG") @db.VarChar(30)
+  khach_hang    khach_hang?
+  nhan_vien     nhan_vien?
+}
+
+model nhan_vien {
+  ma_nguoi_dung BigInt     @id
+  ma_vai_tro    BigInt
+  nguoi_dung    nguoi_dung @relation(fields: [ma_nguoi_dung], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
+  vai_tro       vai_tro    @relation(fields: [ma_vai_tro], references: [ma_vai_tro], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model quyen {
+  ma_quyen      BigInt          @id @default(autoincrement())
+  ten_quyen     String          @unique @db.VarChar(100)
+  mo_ta         String?
+  vai_tro_quyen vai_tro_quyen[]
+}
+
+model vai_tro {
+  ma_vai_tro    BigInt          @id @default(autoincrement())
+  ten_vai_tro   String          @unique @db.VarChar(100)
+  nhan_vien     nhan_vien[]
+  vai_tro_quyen vai_tro_quyen[]
+}
+
+model vai_tro_quyen {
+  ma_vai_tro BigInt
+  ma_quyen   BigInt
+  quyen      quyen   @relation(fields: [ma_quyen], references: [ma_quyen], onDelete: NoAction, onUpdate: NoAction)
+  vai_tro    vai_tro @relation(fields: [ma_vai_tro], references: [ma_vai_tro], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([ma_vai_tro, ma_quyen])
+}
