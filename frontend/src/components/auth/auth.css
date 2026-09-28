@@ -1,0 +1,1013 @@
+/* =========================================
+   RESET
+========================================= */
+
+.auth-page *,
+.auth-page *::before,
+.auth-page *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.auth-page {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+
+/* =========================================
+   BACKGROUND
+========================================= */
+
+.auth-background {
+  position: absolute;
+
+  inset: -30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d8c4b2 0%,
+      #b28b6d 45%,
+      #79533a 100%
+    );
+
+  background-size: cover;
+
+  background-position: center;
+
+  filter: blur(9px);
+
+  transform: scale(1.08);
+}
+
+
+/* =========================================
+   BACKGROUND OVERLAY
+========================================= */
+
+.auth-background-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    rgba(55, 32, 20, 0.52);
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.auth-container {
+  position: relative;
+
+  width: 820px;
+
+  height: 470px;
+
+  max-width:
+    calc(100vw - 40px);
+
+  max-height:
+    calc(100vh - 40px);
+
+  overflow: hidden;
+
+  background:
+    #241913;
+
+  border:
+    1px solid
+    rgba(164, 119, 87, 0.65);
+
+  box-shadow:
+    0 25px 70px
+    rgba(48, 26, 15, 0.55);
+}
+
+
+/* =========================================
+   AUTH FORM
+========================================= */
+
+.auth-form {
+  position: absolute;
+
+  top: 0;
+
+  width: 50%;
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    transform 0.55s
+      cubic-bezier(
+        0.65,
+        0,
+        0.35,
+        1
+      ),
+
+    opacity 0.35s ease;
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+.login-form {
+  left: 0;
+}
+
+
+/* =========================================
+   REGISTER
+========================================= */
+
+.register-form {
+  right: 0;
+}
+
+
+/* =========================================
+   ACTIVE FORM
+========================================= */
+
+.form-active {
+  transform:
+    translateX(0);
+
+  opacity: 1;
+
+  z-index: 3;
+}
+
+
+/* =========================================
+   LOGIN → REGISTER
+   LOGIN RA KHỎI MÀN HÌNH
+========================================= */
+
+.login-form.form-hidden-left {
+  transform:
+    translateX(-115%);
+
+  opacity: 0;
+
+  z-index: 1;
+}
+
+
+/* =========================================
+   REGISTER → LOGIN
+   REGISTER RA KHỎI MÀN HÌNH
+========================================= */
+
+.register-form.form-hidden-right {
+  transform:
+    translateX(115%);
+
+  opacity: 0;
+
+  z-index: 1;
+}
+
+
+/* =========================================
+   FORM CONTENT
+========================================= */
+
+.form-content {
+  width: 280px;
+
+  max-width: 82%;
+}
+
+
+.register-content {
+  width: 315px;
+
+  max-width: 86%;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.form-content h1 {
+  margin:
+    0 0 7px;
+
+  color:
+    #fffaf6;
+
+  font-size:
+    28px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.1;
+}
+
+
+/* =========================================
+   SUBTITLE
+========================================= */
+
+.form-subtitle {
+  margin:
+    0 0 20px;
+
+  color:
+    #c2afa0;
+
+  font-size:
+    10px;
+
+  line-height:
+    1.5;
+}
+
+
+/* =========================================
+   REGISTER
+   HỌ TÊN + TÊN ĐĂNG NHẬP
+========================================= */
+
+.register-row {
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    12px;
+}
+
+
+/* =========================================
+   INPUT GROUP
+========================================= */
+
+.input-group {
+  margin-bottom:
+    12px;
+}
+
+
+/* =========================================
+   LABEL
+========================================= */
+
+.input-group label {
+  display:
+    block;
+
+  margin-bottom:
+    5px;
+
+  color:
+    #d8c6b7;
+
+  font-size:
+    10px;
+}
+
+
+/* =========================================
+   INPUT
+========================================= */
+
+.input-group input {
+  width:
+    100%;
+
+  height:
+    30px;
+
+  padding:
+    0 6px;
+
+  border:
+    none;
+
+  border-bottom:
+    1px solid
+    #765844;
+
+  outline:
+    none;
+
+  background:
+    transparent;
+
+  color:
+    #fffaf6;
+
+  font-size:
+    11px;
+
+  transition:
+    border-color
+    0.2s ease;
+}
+
+
+/* PLACEHOLDER */
+
+.input-group input::placeholder {
+  color:
+    #8d7665;
+}
+
+
+/* FOCUS */
+
+.input-group input:focus {
+  border-bottom-color:
+    #bd865e;
+}
+
+
+/* =========================================
+   SUBMIT BUTTON
+========================================= */
+
+.submit-button {
+  width:
+    100%;
+
+  height:
+    34px;
+
+  margin-top:
+    5px;
+
+  border:
+    none;
+
+  background:
+    #8b5e3c;
+
+  color:
+    #ffffff;
+
+  font-size:
+    10px;
+
+  font-weight:
+    600;
+
+  cursor:
+    pointer;
+
+  transition:
+    background
+    0.2s ease,
+
+    transform
+    0.2s ease;
+}
+
+
+/* HOVER */
+
+.submit-button:hover {
+  background:
+    #a8734d;
+}
+
+
+/* CLICK */
+
+.submit-button:active {
+  transform:
+    scale(0.98);
+}
+
+
+/* DISABLED */
+
+.submit-button:disabled {
+  opacity:
+    0.55;
+
+  cursor:
+    not-allowed;
+}
+
+
+/* =========================================
+   SWITCH LOGIN / REGISTER
+========================================= */
+
+.switch-text {
+  margin:
+    14px 0 0;
+
+  text-align:
+    center;
+
+  color:
+    #a89587;
+
+  font-size:
+    10px;
+}
+
+
+.switch-text button {
+  padding:
+    0;
+
+  border:
+    none;
+
+  background:
+    transparent;
+
+  color:
+    #c18a61;
+
+  font-size:
+    10px;
+
+  font-weight:
+    600;
+
+  cursor:
+    pointer;
+}
+
+
+.switch-text button:hover {
+  text-decoration:
+    underline;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.error-box {
+  margin-bottom:
+    10px;
+
+  padding:
+    7px 9px;
+
+  border-left:
+    2px solid
+    #d26c6c;
+
+  background:
+    rgba(
+      190,
+      60,
+      60,
+      0.15
+    );
+
+  color:
+    #ffaaaa;
+
+  font-size:
+    9px;
+
+  line-height:
+    1.4;
+}
+
+
+/* =========================================================
+   HÌNH XÉO
+========================================================= */
+
+.auth-diagonal {
+  position: absolute;
+
+  top: -35%;
+  width: 62%;
+  height: 170%;
+
+  z-index: 10;
+
+  background:
+    #8b5e3c
+    url('/images/login.png')
+    center / cover
+    no-repeat;
+
+  transition:
+    transform 0.8s
+    cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+
+/* LOGIN: ╱ */
+
+.diagonal-login {
+  right: -8%;
+
+  transform:
+    skewX(-12deg);
+}
+
+
+/* REGISTER: ╲ */
+
+.diagonal-register {
+  left: -8%;
+
+  transform:
+    skewX(12deg);
+}
+
+.diagonal-register .diagonal-inner {
+  transform: skewX(-12deg);
+}
+
+/* =========================================================
+   LOGIN
+   HÌNH Ở BÊN PHẢI
+========================================================= */
+
+.diagonal-login {
+  left:
+    59%;
+}
+
+
+/* =========================================================
+   REGISTER
+   HÌNH CHẠY SANG BÊN TRÁI
+========================================================= */
+
+.diagonal-register {
+  left:
+    -16%;
+}
+
+
+/* =========================================================
+   NỘI DUNG TRÊN HÌNH
+========================================================= */
+
+.diagonal-inner {
+  position: absolute;
+
+  top: 0;
+
+  width: 240px;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  color: #fff;
+
+  /*
+   * Khối bên ngoài xéo -12deg
+   * nên nội dung bù lại +12deg
+   */
+  transform: skewX(12deg);
+}
+
+
+/* =========================================================
+   CONTENT LOGIN
+========================================================= */
+
+.diagonal-login
+.diagonal-inner {
+  left:
+    0;
+}
+
+
+/* =========================================================
+   CONTENT REGISTER
+========================================================= */
+
+.diagonal-register
+.diagonal-inner {
+  right:
+    0;
+}
+
+
+/* =========================================================
+   DIAGONAL TITLE
+========================================================= */
+
+.diagonal-inner h2 {
+  width:
+    190px;
+
+  margin:
+    0;
+
+  color:
+    #ffffff;
+
+  font-size:
+    23px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.15;
+
+  text-shadow:
+    0 2px 8px
+    rgba(
+      54,
+      29,
+      16,
+      0.3
+    );
+}
+
+
+/* =========================================================
+   DIAGONAL TEXT
+========================================================= */
+
+.diagonal-inner p {
+  width:
+    170px;
+
+  margin:
+    10px 0 18px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.86
+    );
+
+  font-size:
+    10px;
+
+  line-height:
+    1.5;
+}
+
+
+/* =========================================================
+   DIAGONAL BUTTON
+========================================================= */
+
+.diagonal-inner button {
+  min-width:
+    100px;
+
+  height:
+    30px;
+
+  padding:
+    0 16px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  background:
+    transparent;
+
+  color:
+    #ffffff;
+
+  font-size:
+    10px;
+
+  font-weight:
+    600;
+
+  cursor:
+    pointer;
+
+  transition:
+    background
+    0.2s ease,
+
+    color
+    0.2s ease;
+}
+
+
+/* HOVER */
+
+.diagonal-inner button:hover {
+  background:
+    #ffffff;
+
+  color:
+    #815536;
+}
+
+
+/* =========================================================
+   =========================================================
+   CHỮ LOGIN / REGISTER
+   LƯỚT RA NGOÀI RIÊNG
+   =========================================================
+   ========================================================= */
+
+
+/*
+   LOGIN → REGISTER
+
+   Login chạy ra bên trái
+*/
+
+.login-form.form-hidden-left
+.form-content {
+  animation:
+    loginTextOut
+    0.45s
+    ease-in
+    forwards;
+}
+
+
+/*
+   REGISTER → LOGIN
+
+   Register chạy ra bên phải
+*/
+
+.register-form.form-hidden-right
+.form-content {
+  animation:
+    registerTextOut
+    0.45s
+    ease-in
+    forwards;
+}
+
+
+/*
+   LOGIN xuất hiện
+   từ ngoài bên trái
+*/
+
+.login-form.form-active
+.form-content {
+  animation:
+    loginTextIn
+    0.55s
+    0.72s
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    )
+    both;
+}
+
+
+/*
+   REGISTER xuất hiện
+   từ ngoài bên phải
+*/
+
+.register-form.form-active
+.form-content {
+  animation:
+    registerTextIn
+    0.55s
+    0.72s
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    )
+    both;
+}
+
+
+/* =========================================================
+   LOGIN TEXT OUT
+========================================================= */
+
+@keyframes loginTextOut {
+
+  0% {
+    opacity:
+      1;
+
+    transform:
+      translateX(0);
+  }
+
+  100% {
+    opacity:
+      0;
+
+    transform:
+      translateX(-220px);
+  }
+
+}
+
+
+/* =========================================================
+   REGISTER TEXT OUT
+========================================================= */
+
+@keyframes registerTextOut {
+
+  0% {
+    opacity:
+      1;
+
+    transform:
+      translateX(0);
+  }
+
+  100% {
+    opacity:
+      0;
+
+    transform:
+      translateX(220px);
+  }
+
+}
+
+
+/* =========================================================
+   LOGIN TEXT IN
+========================================================= */
+
+@keyframes loginTextIn {
+
+  0% {
+    opacity:
+      0;
+
+    transform:
+      translateX(-220px);
+  }
+
+  100% {
+    opacity:
+      1;
+
+    transform:
+      translateX(0);
+  }
+
+}
+
+
+/* =========================================================
+   REGISTER TEXT IN
+========================================================= */
+
+@keyframes registerTextIn {
+
+  0% {
+    opacity:
+      0;
+
+    transform:
+      translateX(220px);
+  }
+
+  100% {
+    opacity:
+      1;
+
+    transform:
+      translateX(0);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .auth-container {
+    width:
+      calc(100vw - 30px);
+
+    height:
+      540px;
+  }
+
+
+  /*
+   * Mobile không dùng hình xéo
+   */
+
+  .auth-diagonal {
+    display:
+      none;
+  }
+
+
+  .auth-form {
+    width:
+      100%;
+  }
+
+
+  .login-form,
+  .register-form {
+    left:
+      0;
+
+    right:
+      auto;
+  }
+
+
+  .form-content,
+  .register-content {
+    width:
+      310px;
+
+    max-width:
+      82%;
+  }
+
+
+  /*
+   * Register trên mobile
+   * chuyển thành 1 cột
+   */
+
+  .register-row {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /*
+   * Animation mobile
+   */
+
+  .form-hidden-left {
+    transform:
+      translateX(-100%);
+  }
+
+
+  .form-hidden-right {
+    transform:
+      translateX(100%);
+  }
+
+}

@@ -15,6 +15,7 @@ export interface User {
   ten_dang_nhap: string;
   ho_ten: string | null;
   vai_tro: UserRole | null;
+  quyen: string[];
 }
 
 export function getCurrentUser(): User | null {

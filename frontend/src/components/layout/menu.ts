@@ -8,8 +8,8 @@ export interface MenuItem {
 
 export const MENU_ITEMS: MenuItem[] = [
   {
-    label: 'Tổng quan',
-    href: '/dashboard',
+    label: 'Trang chủ',
+    href: '/',
     roles: [
       'KY_THUAT_VIEN',
       'TO_TRUONG',
