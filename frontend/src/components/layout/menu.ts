@@ -1,3 +1,4 @@
+// components/layout/menu.ts
 import { UserRole } from '@/lib/auth';
 
 export interface MenuItem {
@@ -8,7 +9,12 @@ export interface MenuItem {
 
 export const MENU_ITEMS: MenuItem[] = [
   {
-    label: 'Tổng quan',
+    label: 'Trang chủ',
+    href: '/',
+    roles: ['KHACH_HANG'],
+  },
+  {
+    label: 'Dashboard',
     href: '/dashboard',
     roles: [
       'KY_THUAT_VIEN',
@@ -20,10 +26,8 @@ export const MENU_ITEMS: MenuItem[] = [
       'KE_TOAN',
       'QUAN_LY_KHO',
       'QUAN_TRI_VIEN',
-      'KHACH_HANG',
     ],
   },
-
   {
     label: 'Phiếu dịch vụ',
     href: '/dashboard/requests',
@@ -36,7 +40,6 @@ export const MENU_ITEMS: MenuItem[] = [
       'KHACH_HANG',
     ],
   },
-
   {
     label: 'Điều phối',
     href: '/dashboard/dispatch',
@@ -47,16 +50,11 @@ export const MENU_ITEMS: MenuItem[] = [
       'DIEU_PHOI_VIEN',
     ],
   },
-
   {
     label: 'Công việc của tôi',
     href: '/dashboard/my-jobs',
-    roles: [
-      'KY_THUAT_VIEN',
-      'TO_TRUONG',
-    ],
+    roles: ['KY_THUAT_VIEN', 'TO_TRUONG'],
   },
-
   {
     label: 'Nhân viên',
     href: '/dashboard/employees',
@@ -67,7 +65,6 @@ export const MENU_ITEMS: MenuItem[] = [
       'TO_TRUONG',
     ],
   },
-
   {
     label: 'Khách hàng',
     href: '/dashboard/customers',
@@ -78,25 +75,16 @@ export const MENU_ITEMS: MenuItem[] = [
       'TONG_DAI_VIEN',
     ],
   },
-
   {
     label: 'Kho',
     href: '/dashboard/warehouse',
-    roles: [
-      'QUAN_TRI_VIEN',
-      'QUAN_LY_KHO',
-    ],
+    roles: ['QUAN_TRI_VIEN', 'QUAN_LY_KHO'],
   },
-
   {
     label: 'Tài chính',
     href: '/dashboard/finance',
-    roles: [
-      'QUAN_TRI_VIEN',
-      'KE_TOAN',
-    ],
+    roles: ['QUAN_TRI_VIEN', 'KE_TOAN'],
   },
-
   {
     label: 'Báo cáo',
     href: '/dashboard/reports',
@@ -107,12 +95,9 @@ export const MENU_ITEMS: MenuItem[] = [
       'KE_TOAN',
     ],
   },
-
   {
     label: 'Quản trị hệ thống',
     href: '/dashboard/system',
-    roles: [
-      'QUAN_TRI_VIEN',
-    ],
+    roles: ['QUAN_TRI_VIEN'],
   },
 ];

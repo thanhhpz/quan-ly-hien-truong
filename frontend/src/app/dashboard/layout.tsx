@@ -1,21 +1,15 @@
-// import Sidebar from '@/components/dashboard/Sidebar';
-import Header from '@/components/dashboard/Header';
+// app/dashboard/layout.tsx
+import Header from '@/components/layout/Header/header';
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* <Sidebar /> */}
-
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Header />
-
-        <main className="flex-1 p-6">
-          {children}
-        </main>
-      </div>
-    </div>
+    <>
+      <Header />
+      <main className="flex-1 bg-gray-50">{children}</main>
+    </>
   );
 }
