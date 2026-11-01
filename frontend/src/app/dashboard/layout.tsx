@@ -1,5 +1,5 @@
 // app/dashboard/layout.tsx
-import Header from '@/components/layout/Header/header';
+import Header from '@/shared/components/Header/header';
 
 export default function DashboardLayout({
   children,

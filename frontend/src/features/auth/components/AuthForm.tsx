@@ -410,7 +410,7 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { setSession } from '@/lib/auth';
+import { setSession } from '@/shared/lib/auth';
 import './auth.css';
 
 type AuthMode = 'login' | 'register';

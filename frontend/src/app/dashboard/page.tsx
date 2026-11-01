@@ -1,64 +1,50 @@
-// app/dashboard/page.tsx
+// src/app/dashboard/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { getCurrentUser, User } from '@/lib/auth';
+import { getCurrentUser, User } from '@/shared/lib/auth';
 
 const GREETING: Record<string, string> = {
-  QUAN_TRI_VIEN: 'Bảng điều khiển quản trị viên',
-  GIAM_DOC_THANH_PHO: 'Bảng điều khiển giám đốc',
-  QUAN_LY_KHU_VUC: 'Bảng điều khiển quản lý khu vực',
-  DIEU_PHOI_VIEN: 'Bảng điều phối',
-  TONG_DAI_VIEN: 'Bảng tổng đài',
-  KE_TOAN: 'Bảng tài chính',
-  QUAN_LY_KHO: 'Bảng kho vật tư',
-  KY_THUAT_VIEN: 'Công việc của tôi',
-  TO_TRUONG: 'Công việc tổ',
+  ADMIN: 'Bảng điều khiển Quản trị viên',
+  NHAN_VIEN: 'Bảng điều khiển Nhân viên',
 };
 
-const QUICK_LINKS: Record<string, { label: string; href: string }[]> = {
-  QUAN_TRI_VIEN: [
-    { label: 'Quản trị hệ thống', href: '/dashboard/system' },
-    { label: 'Nhân viên', href: '/dashboard/employees' },
-    { label: 'Báo cáo', href: '/dashboard/reports' },
-    { label: 'Tài chính', href: '/dashboard/finance' },
-    { label: 'Kho', href: '/dashboard/warehouse' },
+const QUICK_LINKS: Record<string, { label: string; href: string; desc: string }[]> = {
+  ADMIN: [
+    {
+      label: 'Quản lý người dùng',
+      href: '/dashboard/users',
+      desc: 'Xem, thêm, khóa tài khoản và đổi vai trò',
+    },
+    {
+      label: 'Phân quyền hệ thống',
+      href: '/dashboard/roles',
+      desc: 'Quản lý vai trò và gán quyền',
+    },
+    {
+      label: 'Quản lý phiếu dịch vụ',
+      href: '/dashboard/requests',
+      desc: 'Theo dõi và xử lý phiếu dịch vụ',
+    },
+    {
+      label: 'Báo cáo thống kê',
+      href: '/dashboard/reports',
+      desc: 'Xem báo cáo hoạt động hệ thống',
+    },
   ],
-  GIAM_DOC_THANH_PHO: [
-    { label: 'Phiếu dịch vụ', href: '/dashboard/requests' },
-    { label: 'Điều phối', href: '/dashboard/dispatch' },
-    { label: 'Báo cáo', href: '/dashboard/reports' },
-    { label: 'Nhân viên', href: '/dashboard/employees' },
-  ],
-  QUAN_LY_KHU_VUC: [
-    { label: 'Phiếu dịch vụ', href: '/dashboard/requests' },
-    { label: 'Điều phối', href: '/dashboard/dispatch' },
-    { label: 'Nhân viên', href: '/dashboard/employees' },
-    { label: 'Báo cáo', href: '/dashboard/reports' },
-  ],
-  DIEU_PHOI_VIEN: [
-    { label: 'Phiếu dịch vụ', href: '/dashboard/requests' },
-    { label: 'Điều phối', href: '/dashboard/dispatch' },
-  ],
-  TONG_DAI_VIEN: [
-    { label: 'Phiếu dịch vụ', href: '/dashboard/requests' },
-    { label: 'Khách hàng', href: '/dashboard/customers' },
-  ],
-  KE_TOAN: [
-    { label: 'Tài chính', href: '/dashboard/finance' },
-    { label: 'Báo cáo', href: '/dashboard/reports' },
-  ],
-  QUAN_LY_KHO: [
-    { label: 'Kho vật tư', href: '/dashboard/warehouse' },
-  ],
-  KY_THUAT_VIEN: [
-    { label: 'Công việc của tôi', href: '/dashboard/my-jobs' },
-  ],
-  TO_TRUONG: [
-    { label: 'Công việc của tôi', href: '/dashboard/my-jobs' },
-    { label: 'Nhân viên', href: '/dashboard/employees' },
+  NHAN_VIEN: [
+    {
+      label: 'Phiếu dịch vụ',
+      href: '/dashboard/requests',
+      desc: 'Danh sách phiếu dịch vụ được giao',
+    },
+    {
+      label: 'Công việc của tôi',
+      href: '/dashboard/my-jobs',
+      desc: 'Các công việc đang thực hiện',
+    },
   ],
 };
 
@@ -80,36 +66,56 @@ export default function DashboardHome() {
   }, [router]);
 
   if (!user) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh] text-gray-500">
-        Đang tải...
-      </div>
-    );
+    return <div className="py-10 text-gray-600">Đang tải...</div>;
   }
 
   const links = QUICK_LINKS[user.vai_tro] ?? [];
 
   return (
-    <div className="max-w-6xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-2 text-gray-900">
-        {GREETING[user.vai_tro] ?? 'Dashboard'}
-      </h1>
-      <p className="text-gray-600 mb-8">
-        Xin chào, <span className="font-semibold">{user.ho_ten || user.ten_dang_nhap}</span>
-        {' '}— Vai trò: <span className="font-mono text-green-700">{user.vai_tro}</span>
-      </p>
+    <div>
+      {/* Lời chào */}
+      <div className="mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold mb-2">
+          {GREETING[user.vai_tro] ?? 'Dashboard'}
+        </h1>
+        <p className="text-gray-700">
+          Xin chào,{' '}
+          <span className="font-semibold">{user.ho_ten || user.ten_dang_nhap}</span> — Vai trò:{' '}
+          <span className="font-mono">{user.vai_tro}</span>
+        </p>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className="block p-6 bg-white border border-gray-200 rounded-lg hover:border-green-500 hover:shadow-md transition"
-          >
-            <p className="text-lg font-semibold text-gray-900">{link.label}</p>
-            <p className="text-sm text-gray-500 mt-1">{link.href}</p>
-          </Link>
-        ))}
+      {/* Thống kê nhanh (placeholder — nối API sau) */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="border border-gray-300 p-5">
+          <p className="text-sm text-gray-600 mb-1">Tổng người dùng</p>
+          <p className="text-2xl font-bold">—</p>
+        </div>
+        <div className="border border-gray-300 p-5">
+          <p className="text-sm text-gray-600 mb-1">Phiếu đang xử lý</p>
+          <p className="text-2xl font-bold">—</p>
+        </div>
+        <div className="border border-gray-300 p-5">
+          <p className="text-sm text-gray-600 mb-1">Phiếu hoàn thành</p>
+          <p className="text-2xl font-bold">—</p>
+        </div>
+      </div>
+
+      {/* Lối tắt chức năng */}
+      <div>
+        <h2 className="text-lg font-bold mb-3">Chức năng</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="block border border-gray-300 p-5 hover:border-orange-500 hover:bg-orange-50/40 transition-colors"
+            >
+              <p className="font-semibold text-base">{link.label}</p>
+              <p className="text-sm text-gray-600 mt-1">{link.desc}</p>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

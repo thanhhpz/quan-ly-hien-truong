@@ -84,7 +84,7 @@
 // }
 
 
-import AuthForm from '@/components/auth/AuthForm';
+import AuthForm from '@/features/auth/components/AuthForm';
 
 export default function LoginPage() {
   return <AuthForm mode="login" />;

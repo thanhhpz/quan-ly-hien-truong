@@ -8,48 +8,292 @@ datasource db {
 }
 
 model khach_hang {
-  ma_nguoi_dung BigInt     @id
-  nguoi_dung    nguoi_dung @relation(fields: [ma_nguoi_dung], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
+  ma_nguoi_dung Int             @id
+  hop_dong      hop_dong[]
+  nguoi_dung    nguoi_dung      @relation(fields: [ma_nguoi_dung], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
+  phieu_yeu_cau phieu_yeu_cau[]
 }
 
 model nguoi_dung {
-  ma_nguoi_dung BigInt      @id @default(autoincrement())
+  ma_nguoi_dung Int         @id @default(autoincrement())
   ten_dang_nhap String      @unique @db.VarChar(100)
   mat_khau      String      @db.VarChar(255)
   ho_ten        String      @db.VarChar(150)
   so_dien_thoai String?     @unique @db.VarChar(20)
   email         String?     @unique @db.VarChar(150)
-  trang_thai    String      @default("HOAT_DONG") @db.VarChar(30)
+  trang_thai    String?     @default("HOAT_DONG") @db.VarChar(30)
   khach_hang    khach_hang?
   nhan_vien     nhan_vien?
 }
 
 model nhan_vien {
-  ma_nguoi_dung BigInt     @id
-  ma_vai_tro    BigInt
-  nguoi_dung    nguoi_dung @relation(fields: [ma_nguoi_dung], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
-  vai_tro       vai_tro    @relation(fields: [ma_vai_tro], references: [ma_vai_tro], onDelete: NoAction, onUpdate: NoAction)
+  ma_nguoi_dung      Int                  @id
+  ma_vai_tro         Int?
+  nguoi_dung         nguoi_dung           @relation(fields: [ma_nguoi_dung], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
+  vai_tro            vai_tro?             @relation(fields: [ma_vai_tro], references: [ma_vai_tro], onDelete: NoAction, onUpdate: NoAction)
+  phan_cong_ky_thuat phan_cong_ky_thuat[]
+  phieu_yeu_cau      phieu_yeu_cau[]
+  vi_tri_hien_tai    vi_tri_hien_tai[]
 }
 
 model quyen {
-  ma_quyen      BigInt          @id @default(autoincrement())
+  ma_quyen      Int             @id @default(autoincrement())
   ten_quyen     String          @unique @db.VarChar(100)
   mo_ta         String?
   vai_tro_quyen vai_tro_quyen[]
 }
 
 model vai_tro {
-  ma_vai_tro    BigInt          @id @default(autoincrement())
+  ma_vai_tro    Int             @id @default(autoincrement())
   ten_vai_tro   String          @unique @db.VarChar(100)
   nhan_vien     nhan_vien[]
   vai_tro_quyen vai_tro_quyen[]
 }
 
 model vai_tro_quyen {
-  ma_vai_tro BigInt
-  ma_quyen   BigInt
+  ma_vai_tro Int
+  ma_quyen   Int
   quyen      quyen   @relation(fields: [ma_quyen], references: [ma_quyen], onDelete: NoAction, onUpdate: NoAction)
   vai_tro    vai_tro @relation(fields: [ma_vai_tro], references: [ma_vai_tro], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([ma_vai_tro, ma_quyen])
+}
+
+model chi_tiet_hoa_don {
+  ma_chi_tiet      Int            @id @default(autoincrement())
+  don_gia          Decimal?       @db.Decimal(15, 2)
+  thanh_tien       Decimal?       @db.Decimal(15, 2)
+  ma_hoa_don       Int?
+  ma_phieu_yeu_cau Int?
+  hoa_don          hoa_don?       @relation(fields: [ma_hoa_don], references: [ma_hoa_don], onDelete: NoAction, onUpdate: NoAction)
+  phieu_yeu_cau    phieu_yeu_cau? @relation(fields: [ma_phieu_yeu_cau], references: [ma_phieu_yeu_cau], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model chuyen_mon {
+  ma_chuyen_mon    Int     @id @default(autoincrement())
+  ten_chuyen_mon   String? @db.VarChar(100)
+  mo_ta_chuyen_mon String?
+}
+
+model dia_chi {
+  ma_dia_chi    Int             @id @default(autoincrement())
+  so_nha        String?         @db.VarChar(50)
+  dc_da         Int?
+  duong         duong?          @relation(fields: [dc_da], references: [ma_duong], onDelete: NoAction, onUpdate: NoAction)
+  phieu_yeu_cau phieu_yeu_cau[]
+}
+
+model dich_vu {
+  ma_dich_vu              Int                      @id @default(autoincrement())
+  ten_dich_vu             String?                  @db.VarChar(100)
+  thoi_gian_xu_ly_du_kien Unsupported("interval")?
+  ma_loai_dich_vu         Int?
+  loai_dich_vu            loai_dich_vu?            @relation(fields: [ma_loai_dich_vu], references: [ma_loai_dich_vu], onDelete: NoAction, onUpdate: NoAction)
+  don_gia_dich_vu         don_gia_dich_vu[]
+  phieu_yeu_cau           phieu_yeu_cau[]
+}
+
+model don_gia_dich_vu {
+  ma_dich_vu        Int
+  ma_thoi_diem      Int
+  don_gia_thoi_diem Decimal?  @db.Decimal(15, 2)
+  dich_vu           dich_vu   @relation(fields: [ma_dich_vu], references: [ma_dich_vu], onDelete: NoAction, onUpdate: NoAction)
+  thoi_diem         thoi_diem @relation(fields: [ma_thoi_diem], references: [ma_thoi_diem], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([ma_dich_vu, ma_thoi_diem])
+}
+
+model duong {
+  ma_duong  Int        @id @default(autoincrement())
+  ten_duong String?    @db.VarChar(100)
+  da_px     Int?
+  dia_chi   dia_chi[]
+  phuong_xa phuong_xa? @relation(fields: [da_px], references: [ma_phuong_xa], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model hinh_anh_phieu {
+  ma_anh           Int            @id @default(autoincrement())
+  duong_dan        String?
+  ma_phieu_yeu_cau Int?
+  phieu_yeu_cau    phieu_yeu_cau? @relation(fields: [ma_phieu_yeu_cau], references: [ma_phieu_yeu_cau], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model hoa_don {
+  ma_hoa_don            Int                @id @default(autoincrement())
+  ngay_lap              DateTime?          @db.Date
+  trang_thai_thanh_toan String?            @db.VarChar(50)
+  hinh_thuc_thanh_toan  String?            @db.VarChar(50)
+  ma_hop_dong           Int?
+  chi_tiet_hoa_don      chi_tiet_hoa_don[]
+  hop_dong              hop_dong?          @relation(fields: [ma_hop_dong], references: [ma_hop_dong], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model hop_dong {
+  ma_hop_dong            Int             @id @default(autoincrement())
+  ten_hop_dong           String?         @db.VarChar(100)
+  ngay_bat_dau_hop_dong  DateTime?       @db.Date
+  ngay_ket_thuc_hop_dong DateTime?       @db.Date
+  chu_ky                 String?         @db.VarChar(50)
+  ma_khach_hang          Int?
+  hoa_don                hoa_don[]
+  khach_hang             khach_hang?     @relation(fields: [ma_khach_hang], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
+  phieu_bao_tri          phieu_bao_tri[]
+}
+
+model kho_hang {
+  ma_kho     Int       @id @default(autoincrement())
+  loai_kho   String?   @db.VarChar(50)
+  ten_kho    String?   @db.VarChar(100)
+  ma_khu_vuc Int?
+  khu_vuc    khu_vuc?  @relation(fields: [ma_khu_vuc], references: [ma_khu_vuc], onDelete: NoAction, onUpdate: NoAction)
+  ton_kho    ton_kho[]
+}
+
+model khu_vuc {
+  ma_khu_vuc         Int                  @id @default(autoincrement())
+  ten_khu_vuc        String?              @db.VarChar(100)
+  kho_hang           kho_hang[]
+  khu_vuc_duoc_giao  khu_vuc_duoc_giao[]
+  phan_cong_ky_thuat phan_cong_ky_thuat[]
+}
+
+model khu_vuc_duoc_giao {
+  ma_giao_khu_vuc    Int                 @id @default(autoincrement())
+  thoi_gian_giao     DateTime?           @db.Timestamp(6)
+  trang_thai         String?             @db.VarChar(50)
+  ly_do_tu_choi      String?
+  ma_khu_vuc         Int?
+  ma_phieu_yeu_cau   Int?
+  ma_phan_cong       Int?
+  khu_vuc            khu_vuc?            @relation(fields: [ma_khu_vuc], references: [ma_khu_vuc], onDelete: NoAction, onUpdate: NoAction)
+  phan_cong_ky_thuat phan_cong_ky_thuat? @relation(fields: [ma_phan_cong], references: [ma_phan_cong], onDelete: NoAction, onUpdate: NoAction)
+  phieu_yeu_cau      phieu_yeu_cau?      @relation(fields: [ma_phieu_yeu_cau], references: [ma_phieu_yeu_cau], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model lich_lam_viec {
+  ma_lich            Int                 @id @default(autoincrement())
+  ngay_lam           DateTime?           @db.Date
+  ca_lam             String?             @db.VarChar(50)
+  ma_phan_cong       Int?
+  phan_cong_ky_thuat phan_cong_ky_thuat? @relation(fields: [ma_phan_cong], references: [ma_phan_cong], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model loai_dich_vu {
+  ma_loai_dich_vu  Int       @id @default(autoincrement())
+  ten_loai_dich_vu String?   @db.VarChar(100)
+  mo_ta_ldv        String?
+  dich_vu          dich_vu[]
+}
+
+model loai_khach_hang {
+  ma_loai_khach_khach Int     @id @default(autoincrement())
+  ten_loai_khach_hang String? @db.VarChar(100)
+  muc_uu_tien         Int?
+}
+
+model phan_cong_ky_thuat {
+  ma_phan_cong        Int                 @id @default(autoincrement())
+  thoi_gian_phan_cong DateTime?           @db.Timestamp(6)
+  trang_thai          String?             @db.VarChar(50)
+  ghi_chu_cong_viec   String?
+  ma_khu_vuc          Int?
+  ma_nhan_vien        Int?
+  khu_vuc_duoc_giao   khu_vuc_duoc_giao[]
+  lich_lam_viec       lich_lam_viec[]
+  khu_vuc             khu_vuc?            @relation(fields: [ma_khu_vuc], references: [ma_khu_vuc], onDelete: NoAction, onUpdate: NoAction)
+  nhan_vien           nhan_vien?          @relation(fields: [ma_nhan_vien], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
+  vat_tu_su_dung      vat_tu_su_dung[]
+}
+
+model phieu_bao_tri {
+  ma_phieu_bao_tri  Int       @id @default(autoincrement())
+  ten_phieu_bao_tri String?   @db.VarChar(100)
+  ma_hop_dong       Int?
+  hop_dong          hop_dong? @relation(fields: [ma_hop_dong], references: [ma_hop_dong], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model phieu_yeu_cau {
+  ma_phieu_yeu_cau    Int                 @id @default(autoincrement())
+  mo_ta_su_co         String?
+  anh_su_co           String?
+  trang_thai_phieu    String?             @db.VarChar(50)
+  thoi_gian_tao_phieu DateTime?           @db.Timestamp(6)
+  khung_gio_mong_muon String?             @db.VarChar(100)
+  ket_qua             String?
+  ma_khach_hang       Int?
+  ma_dia_chi          Int?
+  ma_nhan_vien_tao    Int?
+  ma_dich_vu          Int?
+  chi_tiet_hoa_don    chi_tiet_hoa_don[]
+  hinh_anh_phieu      hinh_anh_phieu[]
+  khu_vuc_duoc_giao   khu_vuc_duoc_giao[]
+  dia_chi             dia_chi?            @relation(fields: [ma_dia_chi], references: [ma_dia_chi], onDelete: NoAction, onUpdate: NoAction)
+  dich_vu             dich_vu?            @relation(fields: [ma_dich_vu], references: [ma_dich_vu], onDelete: NoAction, onUpdate: NoAction)
+  khach_hang          khach_hang?         @relation(fields: [ma_khach_hang], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
+  nhan_vien           nhan_vien?          @relation(fields: [ma_nhan_vien_tao], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model phuong_xa {
+  ma_phuong_xa  Int            @id @default(autoincrement())
+  ten_phuong_xa String?        @db.VarChar(100)
+  px_tp         Int?
+  duong         duong[]
+  quan_huyen_tp quan_huyen_tp? @relation(fields: [px_tp], references: [ma_quan_huyen], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model quan_huyen_tp {
+  ma_quan_huyen Int         @id @default(autoincrement())
+  ten_thanh_pho String?     @db.VarChar(100)
+  tp_tinh       String?     @db.VarChar(100)
+  phuong_xa     phuong_xa[]
+  tinh          tinh?       @relation(fields: [tp_tinh], references: [ten_tinh], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model thoi_diem {
+  ma_thoi_diem    Int               @id @default(autoincrement())
+  ngay_bat_dau    DateTime?         @db.Timestamp(6)
+  ngay_ket_thuc   DateTime?         @db.Timestamp(6)
+  don_gia_dich_vu don_gia_dich_vu[]
+}
+
+model tinh {
+  ten_tinh      String          @id @db.VarChar(100)
+  quan_huyen_tp quan_huyen_tp[]
+}
+
+model ton_kho {
+  ma_kho       Int
+  ma_vat_tu    Int
+  so_luong_ton Int?
+  kho_hang     kho_hang @relation(fields: [ma_kho], references: [ma_kho], onDelete: NoAction, onUpdate: NoAction)
+  vat_tu       vat_tu   @relation(fields: [ma_vat_tu], references: [ma_vat_tu], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([ma_kho, ma_vat_tu])
+}
+
+model vat_tu {
+  ma_vat_tu      Int              @id @default(autoincrement())
+  ten_vat_tu     String?          @db.VarChar(100)
+  don_vi_tinh    String?          @db.VarChar(50)
+  ton_kho        ton_kho[]
+  vat_tu_su_dung vat_tu_su_dung[]
+}
+
+model vat_tu_su_dung {
+  ma_phan_cong       Int
+  ma_vat_tu          Int
+  so_luong_su_dung   Int?
+  phan_cong_ky_thuat phan_cong_ky_thuat @relation(fields: [ma_phan_cong], references: [ma_phan_cong], onDelete: NoAction, onUpdate: NoAction)
+  vat_tu             vat_tu             @relation(fields: [ma_vat_tu], references: [ma_vat_tu], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([ma_phan_cong, ma_vat_tu])
+}
+
+model vi_tri_hien_tai {
+  ma_vi_tri          Int        @id @default(autoincrement())
+  vi_tri             String?    @db.VarChar(100)
+  kinh_do            Decimal?   @db.Decimal(10, 6)
+  thoi_gian_cap_nhat DateTime?  @db.Timestamp(6)
+  ma_nhan_vien       Int?
+  nhan_vien          nhan_vien? @relation(fields: [ma_nhan_vien], references: [ma_nguoi_dung], onDelete: NoAction, onUpdate: NoAction)
 }

@@ -1,23 +1,15 @@
-// lib/auth.ts
-export type UserRole =
-  | 'KHACH_HANG'
-  | 'KY_THUAT_VIEN'
-  | 'TO_TRUONG'
-  | 'DIEU_PHOI_VIEN'
-  | 'QUAN_LY_KHU_VUC'
-  | 'GIAM_DOC_THANH_PHO'
-  | 'TONG_DAI_VIEN'
-  | 'KE_TOAN'
-  | 'QUAN_LY_KHO'
-  | 'QUAN_TRI_VIEN';
+// src/lib/auth.ts
+export type UserRole = 'ADMIN' | 'NHAN_VIEN' | 'KHACH_HANG';
 
 export interface User {
   id?: number | string;
+  ma_nguoi_dung?: string;
   ho_ten?: string;
   ten_dang_nhap: string;
   email?: string;
   so_dien_thoai?: string;
   vai_tro: UserRole;
+  quyen?: string[]; // Mảng quyền từ Backend
 }
 
 export function getCurrentUser(): User | null {
@@ -26,11 +18,9 @@ export function getCurrentUser(): User | null {
     const raw = localStorage.getItem('user');
     if (!raw) return null;
     const parsed = JSON.parse(raw);
-    if (!parsed || typeof parsed !== 'object') return null;
-    if (!parsed.vai_tro) return null;
+    if (!parsed || !parsed.vai_tro) return null;
     return parsed as User;
   } catch {
-    localStorage.removeItem('user');
     return null;
   }
 }
@@ -54,4 +44,10 @@ export function clearSession() {
   localStorage.removeItem('access_token');
   document.cookie = 'role=; path=/; max-age=0';
   document.cookie = 'access_token=; path=/; max-age=0';
+}
+
+// Hàm kiểm tra quyền (dùng cho Frontend ẩn/hiện UI)
+export function hasPermission(user: User | null, permission: string): boolean {
+  if (!user || !user.quyen) return false;
+  return user.quyen.includes(permission);
 }

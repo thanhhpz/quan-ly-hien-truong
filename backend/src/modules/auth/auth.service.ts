@@ -15,8 +15,9 @@ export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
+  // ĐĂNG KÝ
   async register(dto: RegisterDto) {
     const existingUser = await this.prisma.nguoi_dung.findFirst({
       where: {
@@ -67,6 +68,7 @@ export class AuthService {
     };
   }
 
+  // ĐĂNG NHẬP
   async login(dto: LoginDto) {
     const user = await this.prisma.nguoi_dung.findUnique({
       where: {
@@ -91,6 +93,7 @@ export class AuthService {
       );
     }
 
+    // Lấy vai trò và quyền
     const authorization = await this.getUserAuthorization(
       user.ma_nguoi_dung,
     );
@@ -117,51 +120,25 @@ export class AuthService {
     };
   }
 
-  private async getUserRole(userId: bigint) {
+  // ============================================
+  // LẤY VAI TRÒ VÀ QUYỀN
+  // ============================================
+  private async getUserAuthorization(userId: number) {
+    // 1. Kiểm tra nhân viên (ADMIN, NHAN_VIEN...)
     const employee = await this.prisma.nhan_vien.findUnique({
-      where: {
-        ma_nguoi_dung: userId,
-      },
-      include: {
-        vai_tro: true,
-      },
-    });
-
-    if (employee) {
-      return employee.vai_tro.ten_vai_tro;
-    }
-
-    const customer = await this.prisma.khach_hang.findUnique({
-      where: {
-        ma_nguoi_dung: userId,
-      },
-    });
-
-    if (customer) {
-      return 'KHACH_HANG';
-    }
-
-    return null;
-  }
-  private async getUserAuthorization(userId: bigint) {
-    const employee = await this.prisma.nhan_vien.findUnique({
-      where: {
-        ma_nguoi_dung: userId,
-      },
+      where: { ma_nguoi_dung: userId },
       include: {
         vai_tro: {
           include: {
             vai_tro_quyen: {
-              include: {
-                quyen: true,
-              },
+              include: { quyen: true },
             },
           },
         },
       },
     });
 
-    if (employee) {
+    if (employee?.vai_tro) {
       return {
         vai_tro: employee.vai_tro.ten_vai_tro,
         quyen: employee.vai_tro.vai_tro_quyen.map(
@@ -170,20 +147,25 @@ export class AuthService {
       };
     }
 
+    // 2. Kiểm tra khách hàng
     const customer = await this.prisma.khach_hang.findUnique({
-      where: {
-        ma_nguoi_dung: userId,
-      },
+      where: { ma_nguoi_dung: userId },
     });
 
     if (customer) {
+      // ⬇️ LẤY QUYỀN TỪ ROLE KHACH_HANG TRONG DB (không hardcode nữa)
+      const khachHangRole = await this.prisma.vai_tro.findUnique({
+        where: { ten_vai_tro: 'KHACH_HANG' },
+        include: {
+          vai_tro_quyen: {
+            include: { quyen: true },
+          },
+        },
+      });
+
       return {
         vai_tro: 'KHACH_HANG',
-        quyen: [
-          'XEM_PHIEU',
-          'TAO_PHIEU',
-          'CAP_NHAT_PHIEU',
-        ],
+        quyen: khachHangRole?.vai_tro_quyen.map((item) => item.quyen.ten_quyen) ?? [],
       };
     }
 

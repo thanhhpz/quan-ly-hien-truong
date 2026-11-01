@@ -100,7 +100,7 @@
 //   );
 // }
 
-import AuthForm from '@/components/auth/AuthForm';
+import AuthForm from '@/features/auth/components/AuthForm';
 
 export default function RegisterPage() {
   return <AuthForm mode="register" />;

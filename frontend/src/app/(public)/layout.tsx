@@ -1,6 +1,6 @@
 // app/(public)/layout.tsx
-import Header from '@/components/layout/Header/header';
-import Footer from '@/components/layout/Footer/footer';
+import Header from '@/shared/components/Header/header';
+import Footer from '@/shared/components/Footer/footer';
 
 export default function PublicLayout({
   children,

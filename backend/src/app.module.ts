@@ -6,6 +6,9 @@ import { UsersModule } from './modules/users/users.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard.js';
 import { PermissionsGuard } from './modules/auth/guards/permissions.guard.js';
+import { AdminModule } from './modules/admin/admin.module.js';
+import { DichVuModule } from './modules/dich-vu/dich-vu.module.js';
+import { PhieuYeuCauModule } from './modules/phieu-yeu-cau/phieu-yeu-cau.module.js';
 
 @Module({
   imports: [
@@ -16,6 +19,9 @@ import { PermissionsGuard } from './modules/auth/guards/permissions.guard.js';
     PrismaModule,
     UsersModule,
     AuthModule,
+    AdminModule,
+    DichVuModule,
+    PhieuYeuCauModule
   ],
 
   providers: [

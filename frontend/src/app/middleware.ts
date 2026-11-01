@@ -1,22 +1,11 @@
-// middleware.ts
+// src/middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const ROLES_INTERNAL = [
-  'QUAN_TRI_VIEN',
-  'GIAM_DOC_THANH_PHO',
-  'QUAN_LY_KHU_VUC',
-  'DIEU_PHOI_VIEN',
-  'TONG_DAI_VIEN',
-  'KE_TOAN',
-  'QUAN_LY_KHO',
-  'KY_THUAT_VIEN',
-  'TO_TRUONG',
-];
+const ROLES_INTERNAL = ['ADMIN', 'NHAN_VIEN']; // Đã đổi cho khớp Backend
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
   const role = request.cookies.get('role')?.value;
   const token = request.cookies.get('access_token')?.value;
 
