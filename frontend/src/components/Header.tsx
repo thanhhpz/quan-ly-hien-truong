@@ -36,6 +36,7 @@ export default function Header() {
   const khachHangMenu = [
     { label: 'Trang chủ', href: '/' },
     { label: 'Dịch vụ', href: '/dich-vu' },
+    { label: 'Bản đồ', href: '/khach-hang/ban-do' },
     { label: 'Yêu cầu của tôi', href: '/khach-hang' },
     { label: 'Lịch sử hóa đơn', href: '/khach-hang/hoa-don' },
   ];
